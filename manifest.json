@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "PasteGuard",
+  "description": "Warns you when copying potentially sensitive credentials on any site.",
+  "version": "0.1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PasteGuard"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content-script.js"],
+      "css": ["src/content-style.css"]
+    }
+  ]
+}
