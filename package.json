@@ -1,0 +1,11 @@
+{
+  "name": "pasteguard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test:ui": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.41.2"
+  }
+}

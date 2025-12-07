@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PasteGuard Manual Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 24px;
+    }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    p { margin: 0 0 12px; color: #cbd5e1; }
+    .card {
+      background: #111827;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    code {
+      background: #0b1324;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      font-size: 12px;
+      word-break: break-all;
+    }
+    button {
+      border-radius: 8px;
+      padding: 6px 10px;
+      border: 1px solid #22d3ee;
+      background: #22d3ee;
+      color: #0b1324;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: #0b1324;
+      color: #e2e8f0;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .grid { display: grid; gap: 10px; }
+  </style>
+</head>
+<body>
+  <h1>PasteGuard Manual Test</h1>
+  <p>Use these sample secrets to verify detection. Click “Copy” and paste into a target below; the extension should block paste and show a confirmation modal.</p>
+  <div class="card grid" id="token-list"></div>
+
+  <div class="card">
+    <h3>Paste targets</h3>
+    <p>Try pasting in each field after copying a token above.</p>
+    <textarea rows="3" placeholder="Textarea target"></textarea>
+    <input type="text" placeholder="Input target" />
+    <div contenteditable="true" style="min-height:80px; border-radius:10px; border:1px solid rgba(148,163,184,0.35); padding:10px; background:#0b1324;">ContentEditable target</div>
+  </div>
+
+  <script>
+    const tokens = [
+      { label: "JWT", value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.payload.signature" },
+      { label: "AWS Access Key ID", value: "AKIA1234567890ABCD12" },
+      { label: "AWS Secret Access Key", value: "aws secret key=abcdEFGHijklMNOPqrstuvwxYZ1234567890ABCD" },
+      { label: "Slack token", value: "xoxb-123456789012-123456789012-ABCDEFGHIJKLMNOPQRST" },
+      { label: "GitHub token", value: "ghp_abcdefghijklmnopqrstuvwxyz1234567890" },
+      { label: "GitLab token", value: "glpat-abcdefghijklmnopqrstuvwxyz123456" },
+      { label: "Stripe secret key", value: "sk_test_51L6XYZabcdefghijklmnopqrstuv" },
+      { label: "Google API key", value: "AIza" + "A".repeat(35) },
+      { label: "Generic API key", value: "api_key=sk_test_1234567890abcdef" },
+      { label: "Bearer token", value: "Bearer AbCdEfGhIjKlMnOpQrStUvWxYz1234567890" },
+      { label: "Password assignment", value: "password=SuperSecret123!" },
+      { label: "Private key header", value: "-----BEGIN RSA PRIVATE KEY-----" },
+      { label: "Email address", value: "someone@example.com" },
+      { label: "Credit card", value: "4111 1111 1111 1111" }
+    ];
+
+    const listEl = document.getElementById("token-list");
+
+    tokens.forEach((t) => {
+      const row = document.createElement("div");
+      row.className = "row";
+
+      const label = document.createElement("strong");
+      label.textContent = t.label;
+
+      const code = document.createElement("code");
+      code.textContent = t.value;
+
+      const btn = document.createElement("button");
+      btn.textContent = "Copy";
+      btn.addEventListener("click", async () => {
+        try {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(t.value);
+          } else {
+            const temp = document.createElement("textarea");
+            temp.value = t.value;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            temp.remove();
+          }
+          btn.textContent = "Copied";
+          setTimeout(() => (btn.textContent = "Copy"), 1200);
+        } catch (err) {
+          btn.textContent = "Failed";
+          setTimeout(() => (btn.textContent = "Copy"), 1200);
+        }
+      });
+
+      row.appendChild(label);
+      row.appendChild(code);
+      row.appendChild(btn);
+      listEl.appendChild(row);
+    });
+  </script>
+</body>
+</html>

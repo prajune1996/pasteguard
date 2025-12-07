@@ -10,7 +10,12 @@
     { label: "AWS Secret Access Key", regex: /\baws(.{0,20})?(secret|access)[-_ ]?key[^A-Za-z0-9]{0,5}[A-Za-z0-9\/+=]{30,}\b/i },
     { label: "Email address", regex: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/ },
     // Basic CC pattern (13-19 digits, allowing spaces or dashes)
-    { label: "Credit card number", regex: /\b(?:\d[ -]*?){13,19}\b/ }
+    { label: "Credit card number", regex: /\b(?:\d[ -]*?){13,19}\b/ },
+    { label: "GitHub token", regex: /\bgh[pous]_[A-Za-z0-9]{36}\b/ },
+    { label: "GitLab token", regex: /\bglpat-[A-Za-z0-9_-]{20,}\b/ },
+    { label: "Stripe secret key", regex: /\bsk_(?:live|test)_[A-Za-z0-9]{16,}\b/ },
+    { label: "Google API key", regex: /\bAIza[0-9A-Za-z\-_]{35}\b/ },
+    { label: "Bearer token", regex: /\bBearer\s+[A-Za-z0-9\-\._~\+\/]{20,}\b/i }
   ];
 
   let toastEl;
